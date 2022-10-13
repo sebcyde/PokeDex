@@ -17,9 +17,9 @@ function Dashboard({}: Props) {
 
 	const Navigate = (location: string) => {
 		ClosePage();
-		setTimeout(() => {
-			navigate(location);
-		}, 2000);
+		// setTimeout(() => {
+		navigate(location);
+		// }, 1000);
 	};
 
 	return (

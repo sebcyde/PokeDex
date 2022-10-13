@@ -1,6 +1,6 @@
 import './Themes/Base.scss';
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes, Link, useLocation } from 'react-router-dom';
 import LoadingScreen from './Pages/LoadingScreen';
 import PokeDex from './Pages/PokeDex';
 import Dashboard from './Pages/Dashboard';
@@ -15,6 +15,7 @@ import Footer from './Partials/Footer';
 
 function App() {
 	const [Loading, setLoading] = useState<boolean>(true);
+	const location = useLocation();
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -22,13 +23,21 @@ function App() {
 		}, 1000);
 	}, []);
 
+	useEffect(() => {
+		if (location.pathname != '/') {
+			console.log(location.pathname.slice(1));
+		} else {
+			console.log(location.pathname);
+		}
+	}, [location]);
+
 	return (
 		<div className="App">
 			{Loading ? (
 				<LoadingScreen />
 			) : (
 				<>
-					<Logo />
+					{location.pathname === '/' ? <Logo /> : ''}
 					<Routes>
 						<Route path="/" element={<Dashboard />} />
 						<Route path="pokedex" element={<PokeDex />} />
@@ -39,7 +48,7 @@ function App() {
 						<Route path="moves" element={<Moves />} />
 						<Route path="settings" element={<Settings />} />
 					</Routes>
-					<Footer />
+					{location.pathname === '/' ? <Footer /> : ''}
 				</>
 			)}
 		</div>
