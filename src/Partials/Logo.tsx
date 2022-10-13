@@ -1,9 +1,15 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import logo from '../Assets/Logo.png';
 
 export default function Logo() {
+	const location = useLocation();
 	return (
-		<div className="position-absolute w-100 flex just-center">
+		<div
+			className={`${
+				location.pathname === '/' ? 'position-absolute' : ''
+			} w-100 flex just-center`}
+		>
 			<img
 				src={logo}
 				alt="Logo"
@@ -16,3 +22,5 @@ export default function Logo() {
 		</div>
 	);
 }
+
+// {{location.pathname === '/' ? 'position-absolute' : ''}}
