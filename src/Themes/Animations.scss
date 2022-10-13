@@ -8,6 +8,18 @@
 	animation: pulse 2s linear infinite;
 }
 
+.slide-right {
+	right: -10000px;
+	animation-delay: 2s;
+	animation: slide-from-left 2s forwards;
+}
+
+.slide-left {
+	left: -10000px;
+	animation-delay: 2s;
+	animation: slide-from-right 2s forwards;
+}
+
 @keyframes spin {
 	from {
 		transform: rotate(0deg);
@@ -28,5 +40,17 @@
 
 	100% {
 		transform: scale(1);
+	}
+}
+
+@keyframes slide-from-left {
+	100% {
+		left: 50%;
+	}
+}
+
+@keyframes slide-from-right {
+	100% {
+		right: 50%;
 	}
 }

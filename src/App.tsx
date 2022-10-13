@@ -10,6 +10,8 @@ import Items from './Pages/Items';
 import Machines from './Pages/Machines';
 import Moves from './Pages/Moves';
 import Abilities from './Pages/Abilities';
+import Logo from './Partials/Logo';
+import Footer from './Partials/Footer';
 
 function App() {
 	const [Loading, setLoading] = useState<boolean>(true);
@@ -17,7 +19,7 @@ function App() {
 	useEffect(() => {
 		setTimeout(() => {
 			setLoading(false);
-		}, 3000);
+		}, 1000);
 	}, []);
 
 	return (
@@ -25,16 +27,20 @@ function App() {
 			{Loading ? (
 				<LoadingScreen />
 			) : (
-				<Routes>
-					<Route path="" element={<Dashboard />} />
-					<Route path="pokedex" element={<PokeDex />} />
-					<Route path="abilities" element={<Abilities />} />
-					<Route path="favourites" element={<Favourites />} />
-					<Route path="items" element={<Items />} />
-					<Route path="machines" element={<Machines />} />
-					<Route path="moves" element={<Moves />} />
-					<Route path="settings" element={<Settings />} />
-				</Routes>
+				<>
+					<Logo />
+					<Routes>
+						<Route path="/" element={<Dashboard />} />
+						<Route path="pokedex" element={<PokeDex />} />
+						<Route path="abilities" element={<Abilities />} />
+						<Route path="favourites" element={<Favourites />} />
+						<Route path="items" element={<Items />} />
+						<Route path="machines" element={<Machines />} />
+						<Route path="moves" element={<Moves />} />
+						<Route path="settings" element={<Settings />} />
+					</Routes>
+					<Footer />
+				</>
 			)}
 		</div>
 	);

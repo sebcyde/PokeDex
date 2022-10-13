@@ -3,6 +3,22 @@
 	width: fit-content;
 }
 
+.w-50 {
+	width: 50%;
+}
+
+.w-70 {
+	width: 70%;
+}
+
+.w-80 {
+	width: 80%;
+}
+
+.w-90 {
+	width: 90%;
+}
+
 .w-100 {
 	width: 100%;
 }
@@ -20,8 +36,36 @@
 	height: 30px;
 }
 
+.h-70p {
+	height: 70px;
+}
+
+.h-80p {
+	height: 80px;
+}
+
+.h-90p {
+	height: 90px;
+}
+
 .h-100p {
 	height: 100px;
+}
+
+.h-110p {
+	height: 110px;
+}
+
+.h-120p {
+	height: 120px;
+}
+
+.h-130p {
+	height: 130px;
+}
+
+.h-140p {
+	height: 140px;
 }
 
 .h-100 {
@@ -31,6 +75,10 @@
 // Padding
 .pad-0 {
 	padding: 0;
+}
+
+.pad-thin {
+	padding: 20px;
 }
 
 // Margin
@@ -56,6 +104,20 @@
 
 .margin-right-auto {
 	margin-right: auto;
+}
+
+.margin-xthin {
+	margin: 10px;
+}
+
+.margin-thin {
+	margin: 20px;
+}
+.margin-top-thin {
+	margin-top: 20px;
+}
+.margin-bottom-thin {
+	margin-bottom: 20px;
 }
 
 // Text Align
@@ -90,4 +152,23 @@
 	&.align-center {
 		align-items: center;
 	}
+}
+
+// Position
+
+.position {
+	&-absolute {
+		position: absolute;
+	}
+	&-fixed {
+		position: fixed;
+	}
+}
+
+.top-0 {
+	top: 0px;
+}
+
+.bot-0 {
+	bottom: 0px;
 }

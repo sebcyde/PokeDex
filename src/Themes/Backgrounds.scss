@@ -1,0 +1,20 @@
+// Backgrounds
+
+.radius {
+	&-25p {
+		border-radius: 25px;
+	}
+
+	&-50p {
+		border-radius: 50px;
+	}
+
+	&-70p {
+		border-radius: 70px;
+	}
+}
+
+.black-hex-bg {
+	background-image: url('../Assets/blackbackground.jpg');
+	background-size: cover;
+}
