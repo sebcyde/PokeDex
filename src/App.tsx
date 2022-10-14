@@ -1,6 +1,6 @@
 import './Themes/Base.scss';
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, Link, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import LoadingScreen from './Pages/LoadingScreen';
 import PokeDex from './Pages/PokeDex';
 import Dashboard from './Pages/Dashboard';

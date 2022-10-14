@@ -3,7 +3,7 @@ import Logo from '../Partials/Logo';
 import PokeCards from '../Partials/PokeCards';
 
 function PokeDex() {
-	const [SortType, setSortType] = useState<string>('');
+	const [SortType, setSortType] = useState<string>('A-Z');
 
 	const Shuffle = (event: any) => {
 		if (event != undefined || null) {
@@ -15,7 +15,7 @@ function PokeDex() {
 		<div className="w-100 h-100 flex flex-col align-center">
 			<Logo />
 			<select
-				className="margin-thin w-50 h-30p"
+				className="margin-thin w-50 h-30p flex margin-bot-0 bor-black-thin"
 				name="Sort"
 				onChange={(event) => {
 					Shuffle(event);
