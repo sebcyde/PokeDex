@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { textSpanContainsPosition } from 'typescript';
+import { compareAZ, compareIDHL, compareIDLH, compareZA } from './Functions';
 
 type Pokemon = {
 	name: string;
@@ -16,44 +16,15 @@ export const PokeCardSorter = (sortType: string) => {
 	let AllPokemonDetails: DetailedPokemon[] = [];
 	let SortedCards: Pokemon[] = [];
 
-	function compareAZ(a: any, b: any) {
-		let fa = a.name.toLowerCase(),
-			fb = b.name.toLowerCase();
-
-		if (fa < fb) {
-			return -1;
-		}
-		if (fa > fb) {
-			return 1;
-		}
-		return 0;
-	}
-
-	function compareZA(a: any, b: any) {
-		let fa = a.name.toLowerCase(),
-			fb = b.name.toLowerCase();
-
-		if (fa > fb) {
-			return -1;
-		}
-		if (fa < fb) {
-			return 1;
-		}
-		return 0;
-	}
-
-	function compareIDLH(a: any, b: any) {
-		return a.id - b.id;
-	}
-
-	function compareIDHL(a: any, b: any) {
-		return b.id - a.id;
-	}
-
-	const RecursiveCall = async (URL: string) => {
-		Axios.get(URL).then((response) => {
+	// Detailed Pull
+	const Populate = async () => {
+		await Axios.get(
+			'https://pokeapi.co/api/v2/pokemon?limit=1000000&offset=0'
+		).then((response) => {
+			let Next = response.data.next;
 			let Data = response.data.results;
 			Data.forEach((object: Pokemon) => {
+				AllPokemon.push(object);
 				Axios.get(object.url).then((response) => {
 					AllPokemonDetails.push(response.data);
 				});
@@ -61,19 +32,19 @@ export const PokeCardSorter = (sortType: string) => {
 		});
 	};
 
-	const Populate = async () => {
-		await Axios.get('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0')
-			.then((response) => {
-				response.data.results.forEach((object: Pokemon) => {
-					AllPokemon.push(object);
-				});
-			})
-			.then(() => {
-				console.log(AllPokemon);
-			});
-	};
+	// Standard Pull
+	// const Populate = async () => {
+	// 	await Axios.get(
+	// 		'https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0'
+	// 	).then((response) => {
+	// 		response.data.results.forEach((object: Pokemon) => {
+	// 			AllPokemon.push(object);
+	// 		});
+	// 	});
+	// };
 
 	Populate().then(() => {
+		console.log('Starting sort.');
 		if (sortType === 'A-Z') {
 			AllPokemon.sort(compareAZ);
 		} else if (sortType === 'Z-A') {
@@ -83,7 +54,7 @@ export const PokeCardSorter = (sortType: string) => {
 		} else if (sortType === 'ID2') {
 			AllPokemon.sort(compareIDHL).reverse();
 		}
-
+		console.log('Sort complete.');
 		return AllPokemon;
 	});
 

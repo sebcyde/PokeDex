@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PokeCardSorter } from './Sorting Algorithms/PokecardSorter';
 import Axios from 'axios';
+import LoadLogo from './LoadLogo';
 
 type Props = { sort: string };
 
@@ -15,29 +16,31 @@ type APIPages = {
 };
 
 function PokeCards({ sort }: Props) {
+	const [Loading, setLoading] = useState<boolean>(true);
 	const [Entries, setEntries] = useState<Pokemon[]>([]);
 	const [SortedPokemon, setSortedPokemon] = useState<Pokemon[]>([]);
 
 	const APICall = async (URL: string, sortType: string | null) => {
+		setLoading(true);
 		console.log(`Sort Type is ${sortType}`);
 		await Axios.get(URL)
-			.then((response) => {
-				if (sortType != 'ID1') {
-					console.log('Starting sort');
-					let Pokemon = PokeCardSorter(sortType!);
-					return Pokemon;
-				} else {
-					console.log('Standard Request');
-					console.log(response.data.results);
-					let Pokemon = response.data.results;
-					return Pokemon;
-				}
+			.then((response: any) => {
+				let Pokemon = PokeCardSorter(sortType!);
+				return Pokemon;
+				// if (sortType != 'ID1') {
+				// 	console.log('Starting sort');
+				// 	let Pokemon = PokeCardSorter(sortType!);
+				// 	return Pokemon;
+				// } else {
+				// 	console.log('Standard Request');
+				// 	console.log(response.data.results);
+				// 	let Pokemon = response.data.results;
+				// 	return Pokemon;
+				// }
 			})
-			.then((result) => {
-				setEntries([...Entries]);
-				let N = result;
-
-				setEntries(N);
+			.then((result: any) => {
+				setLoading(false);
+				console.log(result);
 			});
 	};
 
@@ -51,16 +54,20 @@ function PokeCards({ sort }: Props) {
 
 	return (
 		<div className="w-100 h-100 flex flex-col align-center margin-thin">
-			{Entries.map((Entry, key) => {
-				return (
-					<div
-						className="w-80 flex flex-col align-center margin-xthin bor-black-thin col-white black-hex-bg bor-silver-thin radius-25p"
-						key={key}
-					>
-						<p>{Entry.name}</p>
-					</div>
-				);
-			})}
+			{Loading ? (
+				<LoadLogo />
+			) : (
+				Entries.map((Entry, key) => {
+					return (
+						<div
+							className="w-80 flex flex-col align-center margin-xthin bor-black-thin col-white black-hex-bg bor-silver-thin radius-25p"
+							key={key}
+						>
+							<p>{Entry.name}</p>
+						</div>
+					);
+				})
+			)}
 		</div>
 	);
 }

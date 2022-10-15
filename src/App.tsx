@@ -24,11 +24,13 @@ function App() {
 	}, []);
 
 	useEffect(() => {
+		setLoading(true);
 		if (location.pathname != '/') {
 			console.log(location.pathname.slice(1));
 		} else {
 			console.log(location.pathname);
 		}
+		setLoading(false);
 	}, [location]);
 
 	return (
