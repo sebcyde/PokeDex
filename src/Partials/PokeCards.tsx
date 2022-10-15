@@ -18,7 +18,7 @@ type APIPages = {
 function PokeCards({ sort }: Props) {
 	const [Loading, setLoading] = useState<boolean>(true);
 	const [Entries, setEntries] = useState<Pokemon[]>([]);
-	const [SortedPokemon, setSortedPokemon] = useState<Pokemon[]>([]);
+	const [SortedPokemon, setSortedPokemon] = useState<any>([]);
 	const URL: string = 'https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0';
 
 	const APICall = async (URL: string, sortType: string | null) => {
@@ -32,8 +32,23 @@ function PokeCards({ sort }: Props) {
 			})
 			.then((result: any) => {
 				console.log('Sort complete.');
+				let Res = result;
+				setEntries(Res);
+				setSortedPokemon(
+					Entries.map((Entry: Pokemon, key: number) => {
+						return (
+							<div
+								className="w-80 flex flex-col align-center margin-xthin bor-black-thin col-white black-hex-bg bor-silver-thin radius-25p"
+								key={key}
+							>
+								<p>{Entry.name}</p>
+							</div>
+						);
+					})
+				);
+			})
+			.then(() => {
 				setLoading(false);
-				console.log(result);
 			});
 	};
 
@@ -44,24 +59,12 @@ function PokeCards({ sort }: Props) {
 
 	useEffect(() => {
 		console.log(Entries);
-	}, [Entries]);
+		console.log(SortedPokemon);
+	}, [SortedPokemon]);
 
 	return (
 		<div className="w-100 h-100 flex flex-col align-center margin-thin">
-			{Loading ? (
-				<LoadLogo />
-			) : (
-				Entries.map((Entry, key) => {
-					return (
-						<div
-							className="w-80 flex flex-col align-center margin-xthin bor-black-thin col-white black-hex-bg bor-silver-thin radius-25p"
-							key={key}
-						>
-							<p>{Entry.name}</p>
-						</div>
-					);
-				})
-			)}
+			{Loading ? <LoadLogo /> : SortedPokemon}
 		</div>
 	);
 }
