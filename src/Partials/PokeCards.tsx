@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { PokeCardSorter } from './Sorting Algorithms/PokecardSorter';
 import Axios from 'axios';
-
-import { Pagination, Icon } from 'react-materialize';
 
 type Props = { sort: string };
 
@@ -16,83 +15,52 @@ type APIPages = {
 };
 
 function PokeCards({ sort }: Props) {
-	const [Pages, setPages] = useState<APIPages>({ next: null, previous: null });
 	const [Entries, setEntries] = useState<Pokemon[]>([]);
-	const [Count, setCount] = useState<number>(0);
+	const [SortedPokemon, setSortedPokemon] = useState<Pokemon[]>([]);
 
-	const APICall = async (URL: string) => {
-		Axios.get(URL)
+	const APICall = async (URL: string, sortType: string | null) => {
+		console.log(`Sort Type is ${sortType}`);
+		await Axios.get(URL)
 			.then((response) => {
-				let Pokemon = response.data;
-				let RawPages = {
-					next: Pokemon.next,
-					previous: Pokemon.previous,
-				};
-				setCount(Pokemon.count);
-				setEntries(Array.from(Pokemon.results));
-				setPages(RawPages);
+				if (sortType != 'ID1') {
+					console.log('Starting sort');
+					let Pokemon = PokeCardSorter(sortType!);
+					return Pokemon;
+				} else {
+					console.log('Standard Request');
+					console.log(response.data.results);
+					let Pokemon = response.data.results;
+					return Pokemon;
+				}
 			})
-			.then(() => {
-				console.log(Count);
+			.then((result) => {
+				setEntries([...Entries]);
+				let N = result;
+
+				setEntries(N);
 			});
 	};
 
-	// useEffect(() => {
-	// 	APICall('https://pokeapi.co/api/v2/pokemon');
-	// }, []);
-
-	// useEffect(() => {
-	// 	APICall('https://pokeapi.co/api/v2/pokemon');
-	// }, []);
-
 	useEffect(() => {
-		APICall('https://pokeapi.co/api/v2/pokemon');
+		APICall('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0', sort);
 	}, [sort]);
 
-	const PaginationController = () => {};
-
-	const NextPage = () => {
-		APICall(Pages.next!);
+	useEffect(() => {
 		console.log(Entries);
-		console.log(Pages);
-		console.log(Count);
-	};
-
-	const PrevPage = () => {
-		APICall(Pages.previous!);
-		console.log(Entries);
-		console.log(Pages);
-		console.log(Count);
-	};
+	}, [Entries]);
 
 	return (
-		<div className="w-100 h-100 flex flex-col align-center">
-			{/* <h3>{sort}</h3> */}
-			<h4 className="font-15">{Pages.next}</h4>
-			<h4 className="font-15">{Pages.previous}</h4>
-			<button onClick={NextPage}>next</button>
-			<button className="margin-thin" onClick={PrevPage}>
-				previous
-			</button>
+		<div className="w-100 h-100 flex flex-col align-center margin-thin">
 			{Entries.map((Entry, key) => {
 				return (
 					<div
-						className="w-80 flex flex-col align-center margin-xthin bor-black-thin col-white black-hex-bg"
+						className="w-80 flex flex-col align-center margin-xthin bor-black-thin col-white black-hex-bg bor-silver-thin radius-25p"
 						key={key}
 					>
 						<p>{Entry.name}</p>
 					</div>
 				);
 			})}
-			<Pagination
-				activePage={1}
-				items={Count / Entries.length}
-				leftBtn={<Icon>chevron_left</Icon>}
-				rightBtn={<Icon>chevron_right</Icon>}
-				// onSelect={(event) => {
-				// 	Paginate(event);
-				// }}
-			/>
 		</div>
 	);
 }

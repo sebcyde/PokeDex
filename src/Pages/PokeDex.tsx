@@ -3,7 +3,7 @@ import Logo from '../Partials/Logo';
 import PokeCards from '../Partials/PokeCards';
 
 function PokeDex() {
-	const [SortType, setSortType] = useState<string>('A-Z');
+	const [SortType, setSortType] = useState<string>('ID1');
 
 	const Shuffle = (event: any) => {
 		if (event != undefined || null) {
@@ -21,10 +21,10 @@ function PokeDex() {
 					Shuffle(event);
 				}}
 			>
-				<option value="A-Z">A-Z</option>
-				<option value="Z-A">Z-A</option>
 				<option value="ID1">ID Low to High</option>
 				<option value="ID2">ID High to Low</option>
+				<option value="A-Z">A-Z</option>
+				<option value="Z-A">Z-A</option>
 			</select>
 			<PokeCards sort={SortType} />
 		</div>

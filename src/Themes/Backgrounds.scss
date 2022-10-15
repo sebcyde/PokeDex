@@ -1,4 +1,4 @@
-// Backgrounds
+// Borders
 
 .radius {
 	&-25p {
@@ -13,6 +13,20 @@
 		border-radius: 70px;
 	}
 }
+
+.bor {
+	&-white-thin {
+		border: 1px solid white;
+	}
+	&-black-thin {
+		border: 1px solid black;
+	}
+	&-silver-thin {
+		border: 1px solid silver;
+	}
+}
+
+// Backgrounds
 
 .black-hex-bg {
 	background-image: url('../Assets/blackbackground.jpg');
