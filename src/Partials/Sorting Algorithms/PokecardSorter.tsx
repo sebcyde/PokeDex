@@ -11,40 +11,22 @@ type DetailedPokemon = {
 	id: number;
 };
 
-export const PokeCardSorter = (sortType: string) => {
+export const PokeCardSorter = (Data: Pokemon[], sortType: string) => {
 	let AllPokemon: Pokemon[] = [];
 	let AllPokemonDetails: DetailedPokemon[] = [];
 	let SortedCards: Pokemon[] = [];
 
 	// Detailed Pull
-	const Populate = async () => {
-		await Axios.get(
-			'https://pokeapi.co/api/v2/pokemon?limit=1000000&offset=0'
-		).then((response) => {
-			let Next = response.data.next;
-			let Data = response.data.results;
-			Data.forEach((object: Pokemon) => {
-				AllPokemon.push(object);
-				Axios.get(object.url).then((response) => {
-					AllPokemonDetails.push(response.data);
-				});
+	const Populate = async (Data: Pokemon[]) => {
+		Data.forEach((object: Pokemon) => {
+			AllPokemon.push(object);
+			Axios.get(object.url).then((response: any) => {
+				AllPokemonDetails.push(response.data);
 			});
 		});
 	};
 
-	// Standard Pull
-	// const Populate = async () => {
-	// 	await Axios.get(
-	// 		'https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0'
-	// 	).then((response) => {
-	// 		response.data.results.forEach((object: Pokemon) => {
-	// 			AllPokemon.push(object);
-	// 		});
-	// 	});
-	// };
-
-	Populate().then(() => {
-		console.log('Starting sort.');
+	Populate(Data).then(() => {
 		if (sortType === 'A-Z') {
 			AllPokemon.sort(compareAZ);
 		} else if (sortType === 'Z-A') {
@@ -54,7 +36,6 @@ export const PokeCardSorter = (sortType: string) => {
 		} else if (sortType === 'ID2') {
 			AllPokemon.sort(compareIDHL).reverse();
 		}
-		console.log('Sort complete.');
 		return AllPokemon;
 	});
 
