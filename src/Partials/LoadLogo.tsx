@@ -1,5 +1,5 @@
 import React from 'react';
-import Pokeball from '../Assets/Pokeball.png';
+import Pokeball from '../Assets/PB1.png';
 
 type Props = {};
 
