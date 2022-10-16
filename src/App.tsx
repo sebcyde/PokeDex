@@ -1,7 +1,7 @@
 import './Themes/Base.scss';
-// import M from 'materialize-css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+
 import LoadingScreen from './Pages/LoadingScreen';
 import PokeDex from './Pages/PokeDex';
 import Dashboard from './Pages/Dashboard';
@@ -17,6 +17,7 @@ import Navbar from './Partials/Navbar';
 
 function App() {
 	const [Loading, setLoading] = useState<boolean>(true);
+
 	const location = useLocation();
 
 	useEffect(() => {
@@ -41,8 +42,7 @@ function App() {
 		(location.pathname != '/' && location.pathname === '/pokedex') ||
 		(location.pathname != '/' && location.pathname === '/moves') ||
 		(location.pathname != '/' && location.pathname === '/items') ||
-		(location.pathname != '/' && location.pathname === '/machines') ||
-		(location.pathname != '/' && location.pathname === '/settings') ? (
+		(location.pathname != '/' && location.pathname === '/machines') ? (
 			<Navbar />
 		) : (
 			''
@@ -68,6 +68,7 @@ function App() {
 				<>
 					{logo}
 					{Nav}
+
 					<Routes>
 						<Route path="/" element={<Dashboard />} />
 						<Route path="pokedex" element={<PokeDex />} />
@@ -78,6 +79,7 @@ function App() {
 						<Route path="moves" element={<Moves />} />
 						<Route path="settings" element={<Settings />} />
 					</Routes>
+
 					{location.pathname === '/' ? <Footer /> : ''}
 				</>
 			)}

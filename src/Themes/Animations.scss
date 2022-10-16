@@ -30,6 +30,12 @@
 	animation: slide-to-right 4s forwards;
 }
 
+.slide-down {
+	top: -22px;
+	opacity: 0;
+	animation: slide-from-top 1s forwards;
+}
+
 @keyframes spin {
 	from {
 		transform: rotate(0deg);
@@ -74,5 +80,12 @@
 @keyframes slide-to-right {
 	100% {
 		margin-right: -10000px;
+	}
+}
+
+@keyframes slide-from-top {
+	100% {
+		top: 0px;
+		opacity: 1;
 	}
 }

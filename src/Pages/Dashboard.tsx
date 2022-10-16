@@ -38,7 +38,7 @@ function Dashboard() {
 	) => {
 		await ClosePage(MenuItem, MenuItems).then(() => {
 			setTimeout(() => {
-				// navigate(location);
+				navigate(location);
 				console.log(location);
 			}, 500);
 		});

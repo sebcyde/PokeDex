@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { PokeCardSorter } from './SortingAlgorithms/PokecardSorter';
+import React, { useContext, useEffect, useState } from 'react';
+import { PokeCardSorter } from './Sorting/PokecardSorter';
+import { SortContext } from '../Context/SortContext';
 import Axios from 'axios';
 import LoadLogo from './LoadLogo';
 import PokemonDetails from './PokeCards/PokemonDetails';
 
 type Props = { sort: string };
-
-type Pokemon = {
-	name: string;
-	url: string;
-};
 
 type PokemonDetail = {
 	id: number;
@@ -31,6 +27,7 @@ type PokemonDetail = {
 };
 
 function PokeCards({ sort }: Props) {
+	let Context = useContext(SortContext);
 	const [Loading, setLoading] = useState<boolean>(true);
 	const [Entries, setEntries] = useState<PokemonDetail[]>([]);
 	const [SortedPokemon, setSortedPokemon] = useState<JSX.Element[]>([]);
@@ -57,13 +54,14 @@ function PokeCards({ sort }: Props) {
 			.then(() => {
 				setLoading(false);
 				console.log(Entries);
+				console.log(SortedPokemon);
 			});
 	};
 
 	useEffect(() => {
 		setLoading(true);
 		APICall(URL, sort);
-	}, [sort]);
+	}, [Context.SortType]);
 
 	return (
 		<div className="w-100 h-100 flex flex-col align-center margin-thin">

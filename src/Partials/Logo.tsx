@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'aos/dist/aos.css';
 import { useLocation } from 'react-router-dom';
 import logo from '../Assets/Logo2.png';
@@ -9,6 +9,7 @@ import machines from '../Assets/Logos/MachinesLogo.png';
 import settings from '../Assets/Logos/SettingsLogo.png';
 
 export default function Logo() {
+	const [LogoHolder, setLogoHolder] = useState<string>('');
 	const location = useLocation();
 	const AOS = require('aos');
 
@@ -16,6 +17,24 @@ export default function Logo() {
 		AOS.init();
 		AOS.refresh();
 	}, []);
+
+	useEffect(() => {
+		setLogoHolder(
+			location.pathname === '/'
+				? logo
+				: location.pathname.slice(1) === 'pokedex'
+				? pokedex
+				: location.pathname.slice(1) === 'moves'
+				? moves
+				: location.pathname.slice(1) === 'items'
+				? items
+				: location.pathname.slice(1) === 'machines'
+				? machines
+				: location.pathname.slice(1) === 'settings'
+				? settings
+				: ''
+		);
+	}, [location]);
 
 	return (
 		<div
@@ -26,21 +45,7 @@ export default function Logo() {
 			data-aos-duration="700"
 		>
 			<img
-				src={
-					location.pathname === '/'
-						? logo
-						: location.pathname.slice(1) === 'pokedex'
-						? pokedex
-						: location.pathname.slice(1) === 'moves'
-						? moves
-						: location.pathname.slice(1) === 'items'
-						? items
-						: location.pathname.slice(1) === 'machines'
-						? machines
-						: location.pathname.slice(1) === 'settings'
-						? settings
-						: ''
-				}
+				src={LogoHolder}
 				alt="Logo"
 				className="w-80 margin-top-thin"
 				style={{

@@ -192,6 +192,10 @@
 	}
 }
 
+.hidden {
+	display: none;
+}
+
 // Position
 
 .position {
@@ -200,6 +204,9 @@
 	}
 	&-fixed {
 		position: fixed;
+	}
+	&-relative {
+		position: relative;
 	}
 }
 
