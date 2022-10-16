@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { PokeCardSorter } from './Sorting Algorithms/PokecardSorter';
+import { PokeCardSorter } from './SortingAlgorithms/PokecardSorter';
 import Axios from 'axios';
 import LoadLogo from './LoadLogo';
+import PokemonDetails from './PokeCards/PokemonDetails';
 
 type Props = { sort: string };
 
@@ -10,15 +11,29 @@ type Pokemon = {
 	url: string;
 };
 
-type APIPages = {
-	next: string | null;
-	previous: string | null;
+type PokemonDetail = {
+	id: number;
+	name: string;
+	abilities: Object[];
+	types: Object[];
+	height: number;
+	weight: number;
+	sprites: {
+		back_default: string;
+		back_female: string;
+		back_shiny: string;
+		back_shiny_female: string;
+		front_default: string;
+		front_female: string;
+		front_shiny: string;
+		front_shiny_female: string;
+	};
 };
 
 function PokeCards({ sort }: Props) {
 	const [Loading, setLoading] = useState<boolean>(true);
-	const [Entries, setEntries] = useState<Pokemon[]>([]);
-	const [SortedPokemon, setSortedPokemon] = useState<any>([]);
+	const [Entries, setEntries] = useState<PokemonDetail[]>([]);
+	const [SortedPokemon, setSortedPokemon] = useState<JSX.Element[]>([]);
 	const URL: string = 'https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0';
 
 	const APICall = async (URL: string, sortType: string | null) => {
@@ -32,23 +47,16 @@ function PokeCards({ sort }: Props) {
 			})
 			.then((result: any) => {
 				console.log('Sort complete.');
-				let Res = result;
-				setEntries(Res);
+				setEntries(result);
 				setSortedPokemon(
-					Entries.map((Entry: Pokemon, key: number) => {
-						return (
-							<div
-								className="w-80 flex flex-col align-center margin-xthin bor-black-thin col-white black-hex-bg bor-silver-thin radius-25p"
-								key={key}
-							>
-								<p>{Entry.name}</p>
-							</div>
-						);
+					Entries.map((Entry: PokemonDetail, i: number) => {
+						return PokemonDetails(Entry, i);
 					})
 				);
 			})
 			.then(() => {
 				setLoading(false);
+				console.log(Entries);
 			});
 	};
 
@@ -56,11 +64,6 @@ function PokeCards({ sort }: Props) {
 		setLoading(true);
 		APICall(URL, sort);
 	}, [sort]);
-
-	useEffect(() => {
-		console.log(Entries);
-		console.log(SortedPokemon);
-	}, [SortedPokemon]);
 
 	return (
 		<div className="w-100 h-100 flex flex-col align-center margin-thin">

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Logo from '../Partials/Logo';
 import PokeCards from '../Partials/PokeCards';
+import OptionDropdown from '../Partials/PokeCards/OptionDropdown';
 
 function PokeDex() {
 	const [SortType, setSortType] = useState<string>('ID1');
@@ -14,6 +15,7 @@ function PokeDex() {
 	return (
 		<div className="w-100 h-100 flex flex-col align-center">
 			<Logo />
+			<OptionDropdown />
 			<select
 				className="margin-thin w-50 h-30p flex margin-bot-0 bor-black-thin"
 				name="Sort"
@@ -26,7 +28,7 @@ function PokeDex() {
 				<option value="A-Z">A-Z</option>
 				<option value="Z-A">Z-A</option>
 			</select>
-			<PokeCards sort={SortType} />
+			{/* <PokeCards sort={SortType} /> */}
 		</div>
 	);
 }
