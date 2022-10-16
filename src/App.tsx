@@ -13,6 +13,7 @@ import Moves from './Pages/Moves';
 import Abilities from './Pages/Abilities';
 import Logo from './Partials/Logo';
 import Footer from './Partials/Footer';
+import Navbar from './Partials/Navbar';
 
 function App() {
 	const [Loading, setLoading] = useState<boolean>(true);
@@ -31,8 +32,33 @@ function App() {
 		} else {
 			console.log(location.pathname);
 		}
-		setLoading(false);
+		setTimeout(() => {
+			setLoading(false);
+		}, 2000);
 	}, [location]);
+
+	const Nav =
+		(location.pathname != '/' && location.pathname === '/pokedex') ||
+		(location.pathname != '/' && location.pathname === '/moves') ||
+		(location.pathname != '/' && location.pathname === '/items') ||
+		(location.pathname != '/' && location.pathname === '/machines') ||
+		(location.pathname != '/' && location.pathname === '/settings') ? (
+			<Navbar />
+		) : (
+			''
+		);
+
+	const logo =
+		location.pathname === '/' ||
+		'pokedex' ||
+		'moves' ||
+		'items' ||
+		'machines' ||
+		'settings' ? (
+			<Logo />
+		) : (
+			''
+		);
 
 	return (
 		<div className="App">
@@ -40,7 +66,8 @@ function App() {
 				<LoadingScreen />
 			) : (
 				<>
-					{location.pathname === '/' ? <Logo /> : ''}
+					{logo}
+					{Nav}
 					<Routes>
 						<Route path="/" element={<Dashboard />} />
 						<Route path="pokedex" element={<PokeDex />} />

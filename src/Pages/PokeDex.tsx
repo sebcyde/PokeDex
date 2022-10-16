@@ -14,7 +14,6 @@ function PokeDex() {
 
 	return (
 		<div className="w-100 h-100 flex flex-col align-center">
-			<Logo />
 			{/* <OptionDropdown /> */}
 			<select
 				className="margin-thin w-50 h-30p flex margin-bot-0 bor-black-thin"

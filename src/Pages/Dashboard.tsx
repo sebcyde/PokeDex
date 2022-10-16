@@ -1,8 +1,9 @@
 import 'aos/dist/aos.css';
-import styled from 'styled-components';
+import { CSSProperties } from 'react';
 import React, { MutableRefObject, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DivBackground from '../Assets/Sci-Fi/Blue/Hud1.png';
+import { ClosePage } from '../Partials/Animations/ClosePage';
 
 function Dashboard() {
 	const AOS = require('aos');
@@ -13,87 +14,103 @@ function Dashboard() {
 	const ItemsRef = useRef<HTMLDivElement>(null);
 	const MachinesRef = useRef<HTMLDivElement>(null);
 	const SettingsRef = useRef<HTMLDivElement>(null);
+	const MenuItems: React.RefObject<HTMLDivElement>[] = [
+		PokeDexRef,
+		FavouritesRef,
+		MovesRef,
+		ItemsRef,
+		MachinesRef,
+		SettingsRef,
+	];
 
 	useEffect(() => {
 		AOS.init();
 		AOS.refresh();
 	}, []);
 
-	const ClosePage = (MenuItem: MutableRefObject<HTMLDivElement | null>) => {};
-
 	const Navigate = async (
 		location: string,
-		MenuItem: MutableRefObject<HTMLDivElement | null>
+		MenuItem: MutableRefObject<HTMLDivElement | null>,
+		MenuItems: React.RefObject<HTMLDivElement>[]
 	) => {
-		await ClosePage(MenuItem);
-		navigate(location);
+		await ClosePage(MenuItem, MenuItems).then(() => {
+			setTimeout(() => {
+				navigate(location);
+				console.log(location);
+			}, 1500);
+		});
 	};
 
-	const MenuItemStyle = {
+	const MenuItemStyle: CSSProperties = {
 		backgroundImage: `url(${DivBackground})`,
 		backgroundRepeat: 'no-repeat',
 		backgroundSize: '100% 150px',
 		backgroundPosition: '-10%',
-		backgroundColor: 'crimson',
+		boxSizing: `border-box`,
+		height: 'fit-content',
+		overflow: 'visible',
+		marginTop: '5px',
+		padding: '20px 10px',
+		width: '70%',
 	};
 
 	return (
-		<div className="w-100 h-100 flex flex-col align-center just-center margin-auto">
+		<div className="w-100 margin-top-thin flex flex-col align-center  padding-thin">
 			<div
-				className="w-70 col-aqua pad-thin margin-xthin text-center flex align-center just-center "
+				className="col-aqua pad-thin margin-xthin text-center flex align-center just-center"
 				data-aos="fade-right"
 				data-aos-duration="700"
-				onClick={() => Navigate('/pokedex', PokeDexRef)}
+				onClick={() => Navigate('/pokedex', PokeDexRef, MenuItems)}
 				style={MenuItemStyle}
 				ref={PokeDexRef}
 			>
 				<h2 className="margin-0 font-25">PokeDex</h2>
 			</div>
-			<div
-				className="w-70 col-aqua pad-thin margin-xthin text-center flex align-center just-center"
+			{/* <div
+				className="col-aqua pad-thin margin-xthin text-center flex align-center just-center"
 				data-aos="fade-left"
 				data-aos-duration="700"
-				onClick={() => Navigate('/favourites', FavouritesRef)}
+				onClick={() => Navigate('/favourites', FavouritesRef, MenuItems)}
 				style={MenuItemStyle}
 				ref={FavouritesRef}
 			>
 				<h2 className="margin-0 font-25">Favourites</h2>
-			</div>
+			</div> */}
 			<div
-				className="w-70 col-aqua pad-thin margin-xthin text-center flex align-center just-center"
+				className="col-aqua pad-thin margin-xthin text-center flex align-center just-center"
 				data-aos="fade-right"
 				data-aos-duration="700"
-				onClick={() => Navigate('/moves', MovesRef)}
+				onClick={() => Navigate('/moves', MovesRef, MenuItems)}
 				style={MenuItemStyle}
 				ref={MovesRef}
 			>
 				<h2 className="margin-0 font-25">Moves</h2>
 			</div>
 			<div
-				className="w-70 col-aqua pad-thin margin-xthin text-center flex align-center just-center"
+				className="col-aqua pad-thin margin-xthin text-center flex align-center just-center"
 				data-aos="fade-left"
 				data-aos-duration="700"
-				onClick={() => Navigate('/items', ItemsRef)}
+				onClick={() => Navigate('/items', ItemsRef, MenuItems)}
 				style={MenuItemStyle}
 				ref={ItemsRef}
 			>
 				<h2 className="margin-0 font-25">Items</h2>
 			</div>
 			<div
-				className="w-70 col-aqua pad-thin margin-xthin text-center flex align-center just-center"
+				className="col-aqua pad-thin margin-xthin text-center flex align-center just-center"
 				data-aos="fade-right"
 				data-aos-duration="700"
-				onClick={() => Navigate('/machines', MachinesRef)}
+				onClick={() => Navigate('/machines', MachinesRef, MenuItems)}
 				style={MenuItemStyle}
 				ref={MachinesRef}
 			>
 				<h2 className="margin-0 font-25">Machines</h2>
 			</div>
 			<div
-				className="w-70 col-aqua pad-thin margin-xthin text-center flex align-center just-center"
+				className="col-aqua pad-thin margin-xthin text-center flex align-center just-center"
 				data-aos="fade-left"
 				data-aos-duration="700"
-				onClick={() => Navigate('/settings', SettingsRef)}
+				onClick={() => Navigate('/settings', SettingsRef, MenuItems)}
 				style={MenuItemStyle}
 				ref={SettingsRef}
 			>
