@@ -20,6 +20,16 @@
 	animation: slide-from-right 2s forwards;
 }
 
+.slide-out-left {
+	animation-delay: 0s;
+	animation: slide-to-left 4s forwards;
+}
+
+.slide-out-right {
+	animation-delay: 0s;
+	animation: slide-to-right 4s forwards;
+}
+
 @keyframes spin {
 	from {
 		transform: rotate(0deg);
@@ -49,8 +59,20 @@
 	}
 }
 
+@keyframes slide-to-left {
+	100% {
+		margin-left: -10000px;
+	}
+}
+
 @keyframes slide-from-right {
 	100% {
 		right: 50%;
+	}
+}
+
+@keyframes slide-to-right {
+	100% {
+		margin-right: -10000px;
 	}
 }

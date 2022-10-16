@@ -16,7 +16,6 @@ function Dashboard() {
 	const SettingsRef = useRef<HTMLDivElement>(null);
 	const MenuItems: React.RefObject<HTMLDivElement>[] = [
 		PokeDexRef,
-		FavouritesRef,
 		MovesRef,
 		ItemsRef,
 		MachinesRef,
@@ -24,9 +23,13 @@ function Dashboard() {
 	];
 
 	useEffect(() => {
-		AOS.init();
+		AOS.init({ mirror: true });
 		AOS.refresh();
 	}, []);
+
+	document.addEventListener('aos:out', ({ detail }) => {
+		console.log('animated out', detail);
+	});
 
 	const Navigate = async (
 		location: string,
@@ -35,9 +38,9 @@ function Dashboard() {
 	) => {
 		await ClosePage(MenuItem, MenuItems).then(() => {
 			setTimeout(() => {
-				navigate(location);
+				// navigate(location);
 				console.log(location);
-			}, 1500);
+			}, 500);
 		});
 	};
 
@@ -58,7 +61,7 @@ function Dashboard() {
 		<div className="w-100 margin-top-thin flex flex-col align-center  padding-thin">
 			<div
 				className="col-aqua pad-thin margin-xthin text-center flex align-center just-center"
-				data-aos="fade-right"
+				data-aos="fade-left"
 				data-aos-duration="700"
 				onClick={() => Navigate('/pokedex', PokeDexRef, MenuItems)}
 				style={MenuItemStyle}
