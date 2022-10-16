@@ -1,5 +1,5 @@
 import './Themes/Base.scss';
-import M from 'materialize-css';
+// import M from 'materialize-css';
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import LoadingScreen from './Pages/LoadingScreen';

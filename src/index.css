@@ -16,7 +16,7 @@ body,
 }
 
 body {
-	background-image: url('../src/Assets/bluebackground.jpg');
+	background-image: url('../src/Assets/Sci-Fi/Backgrounds/Nav.jpg');
 	background-size: cover;
 	background-attachment: fixed;
 }

@@ -1,4 +1,5 @@
 import 'aos/dist/aos.css';
+import styled from 'styled-components';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,6 +18,8 @@ function Dashboard() {
 		await ClosePage();
 		navigate(location);
 	};
+
+	const MenuItem = styled.div``;
 
 	return (
 		<div className="w-100 h-100 flex flex-col align-center just-center margin-auto">
