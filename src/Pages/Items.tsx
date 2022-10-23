@@ -3,7 +3,9 @@ import { SortContext } from '../Context/SortContext';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import ItemsSorting from '../Partials/Sorting/ItemsSorting';
 import LoadLogo from '../Partials/LoadLogo';
-import { GetItems } from '../Partials/APIs/Items';
+import { GetAllItems, GetCategories } from '../Partials/APIs/Items/AllItems';
+import { GetStandardBalls } from '../Partials/APIs/Items/StandardBalls';
+import styled from 'styled-components';
 
 type InitialItem = {
 	name: string;
@@ -800,36 +802,57 @@ type InitialItem = {
 	};
 };
 
+interface Categories {
+	name: string;
+	items: string[];
+}
+
+const ItemContainer = styled.div`
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	color: white;
+	background-color: #131a22;
+`;
+
 function Items() {
-	let Never = '';
-	let RawItems: InitialItem[] = [];
-	const [Loading, setLoading] = useState<boolean>(true);
+	let categories: Categories[] = [];
 	let Context = useContext(SortContext);
-	const [AllItems, setAllItems] = useState<JSX.Element[]>([]);
+	const [Loading, setLoading] = useState<boolean>(true);
+	const [Categories, setCategories] = useState<Categories[]>();
+	const [AllItems, setAllItems] = useState<InitialItem[]>();
+	const [AllItemElements, setAllItemElements] = useState<JSX.Element[]>([]);
+
+	const RetrieveAll = async () => {
+		let All = await GetCategories();
+		setCategories(All.Categories);
+		setAllItems(All.Allitems);
+		console.log(All);
+		setLoading(false);
+	};
+
+	const CreateElements = async (array: InitialItem[]) => {
+		let InitialItems = array.map((Item, index: number) => {
+			return (
+				<ItemContainer
+					className="flex justify-even align-center col-white"
+					key={index}
+				>
+					<img src={Item.data.sprites.default} className="h-100 w-auto" />
+					<span className="flex col">
+						<h2>{Item.data.name}</h2>
+						<p>Type: {Item.data.category.name}</p>
+					</span>
+				</ItemContainer>
+			);
+		});
+		setAllItemElements(InitialItems);
+	};
 
 	useEffect(() => {
-		GetItems().then(
-			(value: InitialItem[]) => {
-				console.log(value);
-				let InitialItems = value.map((Item, index: number) => {
-					return (
-						<div
-							className="flex justify-even align-center col-white"
-							key={index}
-						>
-							<img src={Item.data.sprites.default} className="h-100 w-auto" />
-							<span className="flex col ">
-								<h2>{Item.data.name}</h2>
-								<p>Type: {Item.data.category.name}</p>
-							</span>
-						</div>
-					);
-				});
-				setAllItems(InitialItems);
-				setLoading(false);
-			},
-			(reason: any) => console.log(reason)
-		);
+		// Only pull one based on current Item Page
+		// GetStandardBalls();
+		RetrieveAll();
 	}, []);
 
 	// const Sort = async () => {
@@ -866,7 +889,7 @@ function Items() {
 	// 	});
 	// }, [Context.SortType]);
 
-	return <div>{Loading ? <LoadLogo /> : AllItems}</div>;
+	return <div>{Loading ? <LoadLogo /> : AllItemElements}</div>;
 }
 
 export default Items;

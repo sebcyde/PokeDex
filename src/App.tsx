@@ -1,7 +1,6 @@
 import './Themes/Base.scss';
 import React, { useEffect, useState, useContext } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-
 import LoadingScreen from './Pages/LoadingScreen';
 import PokeDex from './Pages/PokeDex';
 import Dashboard from './Pages/Dashboard';

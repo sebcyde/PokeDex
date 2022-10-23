@@ -795,9 +795,14 @@ type InitialItem = {
 	};
 };
 
-let RawItems: InitialItem[] = [];
+type Categories = {
+	name: string;
+	items: string[];
+};
 
-export const GetItems = async () => {
+export const GetAllItems = async () => {
+	let RawItems: InitialItem[] = [];
+
 	await axios
 		.get('https://pokeapi.co/api/v2/item?offset=0&limit=10000000')
 		.then((result) => {
@@ -812,5 +817,48 @@ export const GetItems = async () => {
 			});
 		});
 
+	console.log(RawItems);
 	return RawItems;
+};
+
+export const GetCategories = async () => {
+	let categories: Categories[] = [];
+	let RawItems: InitialItem[] = [];
+
+	const checkCat = (CatObject: Categories, ItemName: string) => {
+		if (categories.some((e) => e.name === CatObject.name)) {
+			for (let index = 0; index < categories.length; index++) {
+				if (categories[index].name === CatObject.name) {
+					categories[index].items.push(ItemName);
+				}
+			}
+		} else {
+			categories.push(CatObject);
+		}
+	};
+
+	await axios
+		.get('https://pokeapi.co/api/v2/item?offset=0&limit=10000000')
+		.then((result) => {
+			result.data.results.forEach((result: InitialItem, index: number) => {
+				axios.get(result.url).then((ItemData) => {
+					let TempCat = {
+						name: ItemData.data.category.name,
+						items: [ItemData.data.name],
+					};
+					checkCat(TempCat, ItemData.data.name);
+
+					RawItems.push({
+						name: result.name,
+						url: result.url,
+						data: ItemData.data,
+					});
+				});
+			});
+		});
+
+	console.log(RawItems);
+	console.log(categories);
+
+	return { Allitems: RawItems, Categories: categories };
 };
