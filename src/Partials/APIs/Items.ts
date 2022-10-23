@@ -1,9 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import { SortContext } from '../Context/SortContext';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
-import ItemsSorting from '../Partials/Sorting/ItemsSorting';
-import LoadLogo from '../Partials/LoadLogo';
-import { GetItems } from '../Partials/APIs/Items';
 
 type InitialItem = {
 	name: string;
@@ -800,73 +795,22 @@ type InitialItem = {
 	};
 };
 
-function Items() {
-	let Never = '';
-	let RawItems: InitialItem[] = [];
-	const [Loading, setLoading] = useState<boolean>(true);
-	let Context = useContext(SortContext);
-	const [AllItems, setAllItems] = useState<JSX.Element[]>([]);
+let RawItems: InitialItem[] = [];
 
-	useEffect(() => {
-		GetItems().then(
-			(value: InitialItem[]) => {
-				console.log(value);
-				let InitialItems = value.map((Item, index: number) => {
-					return (
-						<div
-							className="flex justify-even align-center col-white"
-							key={index}
-						>
-							<img src={Item.data.sprites.default} className="h-100 w-auto" />
-							<span className="flex col ">
-								<h2>{Item.data.name}</h2>
-								<p>Type: {Item.data.category.name}</p>
-							</span>
-						</div>
-					);
+export const GetItems = async () => {
+	await axios
+		.get('https://pokeapi.co/api/v2/item?offset=0&limit=10000000')
+		.then((result) => {
+			result.data.results.forEach((result: InitialItem, index: number) => {
+				axios.get(result.url).then((ItemData) => {
+					RawItems.push({
+						name: result.name,
+						url: result.url,
+						data: ItemData.data,
+					});
 				});
-				setAllItems(InitialItems);
-				setLoading(false);
-			},
-			(reason: any) => console.log(reason)
-		);
-	}, []);
+			});
+		});
 
-	// const Sort = async () => {
-	// 	console.log('Sorting');
-	// 	setLoading(true);
-	// 	try {
-	// 		setAllItems(
-	// 			ItemsSorting(RawItems, Context.SortType ? Context.SortType : 'A-Z').map(
-	// 				(Item) => {
-	// 					return (
-	// 						<div className="flex justify-even align-center">
-	// 							<img src={Item.data.sprites.default} className="h-100 w-auto" />
-	// 							<span className="flex col ">
-	// 								<h2>{Item.data.name}</h2>
-	// 								<p>Type: {Item.data.category.name}</p>
-	// 							</span>
-	// 						</div>
-	// 					);
-	// 				}
-	// 			)
-	// 		);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// };
-
-	// useMemo(() => Run(), [Never]);
-
-	// useEffect(() => {
-	// 	setLoading(true);
-	// 	Sort().then(() => {
-	// 		console.log(AllItems);
-	// 		setLoading(false);
-	// 	});
-	// }, [Context.SortType]);
-
-	return <div>{Loading ? <LoadLogo /> : AllItems}</div>;
-}
-
-export default Items;
+	return RawItems;
+};
