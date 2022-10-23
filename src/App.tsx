@@ -65,8 +65,8 @@ function App() {
 				<LoadingScreen />
 			) : (
 				<>
-					{logo}
-					{Nav}
+					{/* {logo} */}
+					{/* {Nav} */}
 
 					<Routes>
 						<Route path="/" element={<Dashboard />} />

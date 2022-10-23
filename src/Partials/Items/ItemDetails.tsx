@@ -1,12 +1,7 @@
-import axios, { AxiosResponse } from 'axios';
-import { SortContext } from '../Context/SortContext';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
-import ItemsSorting from '../Partials/Sorting/ItemsSorting';
-import LoadLogo from '../Partials/LoadLogo';
-import { GetAllItems, GetCategories } from '../Partials/APIs/Items/AllItems';
-import { GetStandardBalls } from '../Partials/APIs/Items/StandardBalls';
-import styled from 'styled-components';
-import { ItemDetails } from '../Partials/Items/ItemDetails';
+import 'aos/dist/aos.css';
+import axios from 'axios';
+import React, { CSSProperties, useEffect, useState } from 'react';
+import DivBackground from '../../Assets/Sci-Fi/Blue/Hud1.png';
 
 type InitialItem = {
 	name: string;
@@ -808,132 +803,65 @@ interface Categories {
 	items: string[];
 }
 
-const ItemContainer = styled.div`
-	display: flex;
-	justify-content: space-evenly;
-	align-items: center;
-	color: white;
-	background-color: #131a22;
-`;
+const ItemContainerStyle: CSSProperties = {
+	backgroundImage: `url(${DivBackground})`,
+	backgroundRepeat: 'no-repeat',
+	backgroundSize: '100% 150px',
+	backgroundPosition: '-10%',
+	boxSizing: `border-box`,
+	height: 'fit-content',
+	overflow: 'visible',
+	marginTop: '5px',
+	padding: '20px 10px',
+	width: '70%',
+};
 
-function Items() {
-	const PageLoad = '';
-	let Context = useContext(SortContext);
-	const [Loading, setLoading] = useState<boolean>(true);
-	const [Categories, setCategories] = useState<Categories[]>();
-	const [AllItems, setAllItems] = useState<InitialItem[]>();
-	const [AllItemElements, setAllItemElements] = useState<JSX.Element[]>([]);
-	const [ChosenElements, setChosenElements] = useState<JSX.Element[]>([]);
+export const ItemDetails = (
+	ChosenCategory: string,
+	Categories: Categories[]
+) => {
+	let ItemElements: JSX.Element[] = [];
 
-	const RetrieveAll = async () => {
-		let All = await GetCategories();
-		let Pokeballs = await CatLoop(All.Categories[0]?.name);
-		let Initial = await CreateElements(All.Allitems);
-		console.log(All);
-		setCategories(All.Categories);
-		setAllItems(All.Allitems);
-		setAllItemElements(Initial);
-		setLoading(false);
-		return All;
-	};
-
-	const CatLoop = async (ChosenCategory: string) => {
-		for (let index = 0; index < Categories!.length; index++) {
-			console.log(index);
-			console.log(Categories![index].name);
-			if (
-				ChosenCategory.toLowerCase() == Categories![index].name.toLowerCase()
-			) {
-				console.log('MATCH');
-				AllItems?.forEach((Item) => {
-					if (
-						Item.data.category.name.toLowerCase() ===
-						ChosenCategory.toLowerCase()
-					) {
-						setChosenElements((ChosenElements) => [
-							...ChosenElements,
-							<div className="col-white">{Item.name}</div>,
-						]);
-					}
-				});
-			} else {
-				console.log('No Match');
-			}
+	for (let index = 0; index < Categories.length; index++) {
+		console.log(index);
+		console.log(Categories[index].name);
+		if (ChosenCategory.toLowerCase() == Categories[index].name.toLowerCase()) {
+			console.log('MATCH');
+		} else {
+			console.log('No Match');
 		}
-	};
+	}
 
-	const CreateElements = async (array: InitialItem[]) => {
-		let InitialItems = array.map((Item, index: number) => {
-			return (
-				<ItemContainer
-					className="flex justify-even align-center col-white"
-					key={index}
-				>
-					<img src={Item.data.sprites.default} className="h-100 w-auto" />
-					<span className="flex col">
-						<h2>{Item.data.name}</h2>
-						<p>Type: {Item.data.category.name}</p>
-					</span>
-				</ItemContainer>
-			);
-		});
-		return InitialItems;
-	};
-
-	useMemo(() => RetrieveAll(), [PageLoad]);
-
-	// useEffect(() => {
-	// 	RetrieveAll();
-	// }, [PageLoad]);
-
-	// const Sort = async () => {
-	// 	console.log('Sorting');
-	// 	setLoading(true);
-	// 	try {
-	// 		setAllItems(
-	// 			ItemsSorting(RawItems, Context.SortType ? Context.SortType : 'A-Z').map(
-	// 				(Item) => {
-	// 					return (
-	// 						<div className="flex justify-even align-center">
-	// 							<img src={Item.data.sprites.default} className="h-100 w-auto" />
-	// 							<span className="flex col ">
-	// 								<h2>{Item.data.name}</h2>
-	// 								<p>Type: {Item.data.category.name}</p>
-	// 							</span>
-	// 						</div>
-	// 					);
-	// 				}
-	// 			)
-	// 		);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
+	// Categories[0].items.forEach((Element) => {
+	// 	axios
+	// 		.get(`https://pokeapi.co/api/v2/item?${Category.name}`)
+	// 		.then((result) => {
+	// 			console.log(result.data);
+	// 			// result.data.results.forEach((result: InitialItem, index: number) => {
+	// let TempCat = {
+	// 	name: ItemData.data.category.name,
+	// 	items: [ItemData.data.name],
 	// };
+	// checkCat(TempCat, ItemData.data.name);
+	// });
+	// 		});
+	// });
 
-	// useMemo(() => Run(), [Never]);
+	// let ItemElements = Items.map((Item, index: number) => {
+	// 	if (
+	// 		Item.data.category.name.toLowerCase() === ChosenCategory.toLowerCase()
+	// 	) {
+	// 		console.log('Item Match - Pushing to array');
+	// 		return (
+	// 			<div
+	// 				className="col-aqua pad-thin margin-xthin text-center flex align-center just-center"
+	// 				key={index}
+	// 			>
+	// 				<h2 className="margin-0 font-25">{Item.name}</h2>
+	// 			</div>
+	// 		);
+	// 	}
+	// });
 
-	// useEffect(() => {
-	// 	setLoading(true);
-	// 	Sort().then(() => {
-	// 		console.log(AllItems);
-	// 		setLoading(false);
-	// 	});
-	// }, [Context.SortType]);
-
-	return (
-		<div>
-			{Loading ? (
-				<LoadLogo />
-			) : (
-				<>
-					{ChosenElements.map((Item) => Item)}
-					{AllItemElements.map((Item) => {
-						return Item;
-					})}
-				</>
-			)}
-		</div>
-	);
-}
-
-export default Items;
+	return ItemElements;
+};
